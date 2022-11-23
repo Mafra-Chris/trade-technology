@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import BarChart from './BarChart';
 
 export default function StepTeamInfo({ teamInfo }) {
   const [showMore, setShowMore] = useState(false);
@@ -14,9 +15,7 @@ export default function StepTeamInfo({ teamInfo }) {
     }
   }
   function getPlayers() {
-    console.log(teamInfo.players);
     let players = teamInfo.players.map((player) => {
-      console.log(player);
       return (
         <li
           key={player.player.id}
@@ -101,7 +100,7 @@ export default function StepTeamInfo({ teamInfo }) {
             </div>
           </div>
         </div>
-        <div>
+        <div className="row-span-2">
           <h1>Formação mais utilizada</h1>
           <h2>{getMostUsedLineup()}</h2>
         </div>
@@ -125,6 +124,25 @@ export default function StepTeamInfo({ teamInfo }) {
               {showMore ? 'Ver Menos' : 'Ver Mais'}
             </button>
           </div>
+        </div>
+        <div className="md:col-span-2 bg-white rounded-md font-semibold p-4 text-black">
+          <h1 className="font-bold text-xl uppercase">
+            Gols marcados por tempo de Jogo
+          </h1>
+          <BarChart
+            labels={['0-5', '16-30', '31-45']}
+            datasets={[
+              {
+                label: 'Gols',
+                data: [
+                  teamInfo.stats.goals.for.minute['0-15'].total,
+                  teamInfo.stats.goals.for.minute['16-30'].total,
+                  teamInfo.stats.goals.for.minute['31-45'].total,
+                ],
+                backgroundColor: 'rgba(26, 41, 60, 0.5)',
+              },
+            ]}
+          ></BarChart>
         </div>
       </div>
     </div>
