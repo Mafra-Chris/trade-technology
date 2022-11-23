@@ -8,9 +8,7 @@ import StepAccess from '../components/StepAccess';
 
 export default function Index() {
   const [currentStep, setCurrentStep] = useState('access');
-  const [apiKey, setApiKey] = useState(
-    'fcde6eeac9mshc2bf2766d78cc66p17add7jsn612c20a91515'
-  );
+  const [apiKey, setApiKey] = useState('');
   const [currentLeague, setCurrentLeague] = useState();
   const [leagues, setLeagues] = useState();
   const [season, setSeason] = useState(2022);
