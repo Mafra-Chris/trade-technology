@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = 'https://v3.football.api-sports.io'
-const HOST = 'v3.football.api-sports.io'
+const BASE_URL = 'https://api-football-v1.p.rapidapi.com/v3'
+const HOST = 'api-football-v1.p.rapidapi.com'
 
 export async function testAPI(apiKey: string) {
   try {
