@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import * as api from '../services/footballAPI';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingSpinner from './LoadingSpinner';
 export default function StepLeagues({
   leagues,
   season,
@@ -10,9 +11,11 @@ export default function StepLeagues({
   handleLeaguesStep,
 }) {
   const [leaguesElements, setLeaguesElements] = useState();
-
+  const [loading, setLoading] = useState(false);
   async function getTeams(leagueId: number) {
+    setLoading(true);
     const teams = await api.getTeams(apiKey, leagueId, season, country);
+    setLoading(false);
     if (teams.length <= 0) {
       toast.error('Nenhum time encontrado!');
       return;
@@ -22,7 +25,6 @@ export default function StepLeagues({
     }
     let data = { teams: teams, step: 'teams', league: leagueId };
     handleLeaguesStep(data);
-    console.log(teams);
   }
   useEffect(() => {
     setLeaguesElements(
@@ -48,14 +50,20 @@ export default function StepLeagues({
   }, [leagues]);
 
   return (
-    <div>
-      <ToastContainer />
-      <h1 className="text-5xl font-bold text-b-blue text-center">
-        Escolha uma liga
-      </h1>
-      <div className="grid grid-cols-2 gap-4 mt-10 md:grid-cols-3 md:gap-12  rounded-lg">
-        {leaguesElements}
-      </div>
-    </div>
+    <>
+      {!loading ? (
+        <div>
+          <ToastContainer />
+          <h1 className="text-5xl font-bold text-b-blue text-center">
+            Escolha uma liga
+          </h1>
+          <div className="grid grid-cols-2 gap-4 mt-10 md:grid-cols-3 md:gap-12  rounded-lg">
+            {leaguesElements}
+          </div>
+        </div>
+      ) : (
+        <LoadingSpinner />
+      )}
+    </>
   );
 }

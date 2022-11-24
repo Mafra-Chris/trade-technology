@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import * as api from '../services/footballAPI';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingSpinner from './LoadingSpinner';
 export default function StepTeams({
   teams,
   leagueId,
@@ -10,10 +11,12 @@ export default function StepTeams({
   handleTeamsStep,
 }) {
   const [teamsElements, setTeamsElements] = useState();
-
+  const [loading, setLoading] = useState(false);
   async function getTeamInfo(teamId: number) {
+    setLoading(true);
     const stats = await api.getTeamStats(apiKey, leagueId, season, teamId);
     const players = await api.getTeamPlayers(apiKey, leagueId, season, teamId);
+    setLoading(false);
     if (!stats || !players) {
       toast.error('Erro ao buscar estatísticas do time!');
       return;
@@ -46,14 +49,20 @@ export default function StepTeams({
   }, [teams]);
 
   return (
-    <div>
-      <ToastContainer />
-      <h1 className="text-5xl font-bold text-b-blue text-center">
-        Escolha um time
-      </h1>
-      <div className="grid grid-cols-2 gap-4 mt-10 md:grid-cols-3 md:gap-12">
-        {teamsElements}
-      </div>
-    </div>
+    <>
+      {!loading ? (
+        <div>
+          <ToastContainer />
+          <h1 className="text-5xl font-bold text-b-blue text-center">
+            Escolha um time
+          </h1>
+          <div className="grid grid-cols-2 gap-4 mt-10 md:grid-cols-3 md:gap-12">
+            {teamsElements}
+          </div>
+        </div>
+      ) : (
+        <LoadingSpinner />
+      )}
+    </>
   );
 }

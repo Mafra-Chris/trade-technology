@@ -50,7 +50,6 @@ export async function getLeagues(apiKey: string, country: string, season: number
       },
       params: { country: country, season: season }
     })
-    console.log(response)
     return response.data.response.map((el: any) => { return el.league })
   } catch (error) {
     return false
