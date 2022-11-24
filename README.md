@@ -1,1 +1,10 @@
-# Teste Técnico Trade Technology
+# Trade Technology - Meu time ⚽
+
+```
+pnpm install
+```
+
+### Compiles and hot-reloads for development
+```
+pnpm run dev
+```
