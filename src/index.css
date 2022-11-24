@@ -25,3 +25,10 @@ body {
   background: #888;
   border-radius: 10px;
 }
+
+.field {
+  background-size: cover;
+  background-repeat: no-repeat;
+  transform: rotate(180deg);
+  background-image: url('./assets/field.png'), url('./assets/grass.png');
+}

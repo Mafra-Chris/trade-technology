@@ -3,15 +3,19 @@ import BarChart from './BarChart';
 
 export default function StepTeamInfo({ teamInfo }) {
   const [showMore, setShowMore] = useState(false);
+  const [lineupSplited, setLineupSplited] = useState([0, 0, 0, 0]);
 
-  useEffect(() => console.log(teamInfo));
-  function getMostUsedLineup() {
+  useEffect(() => {
+    setMostUsedLineup();
+  }, []);
+
+  function setMostUsedLineup() {
     if (teamInfo.stats.lineups) {
       let maxPlayed = Math.max(...teamInfo.stats.lineups.map((e) => e.played));
       let lineup = teamInfo.stats.lineups.find(
         (lineup) => lineup.played === maxPlayed
       );
-      return lineup.formation;
+      setLineupSplited(lineup.formation.split('-'));
     }
   }
   function getPlayers() {
@@ -38,13 +42,13 @@ export default function StepTeamInfo({ teamInfo }) {
   }
   return (
     <div className="w-full">
-      <div className="flex py-8">
+      <div className="flex flex-wrap py-8">
         <img src={teamInfo.stats.team.logo} className="h-24 md:h-28" />
         <div className="ml-4 md:ml-16">
           <h1 className="font-bold mt-2 text-4xl uppercase">
             {teamInfo.stats.team.name}
           </h1>
-          <h2 className="mt-2 font-semibold text-gray-200">1895 | Série A</h2>
+          {/* <h2 className="mt-2 font-semibold text-gray-200">1895 | Série A</h2> */}
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -100,9 +104,49 @@ export default function StepTeamInfo({ teamInfo }) {
             </div>
           </div>
         </div>
-        <div className="row-span-2">
-          <h1>Formação mais utilizada</h1>
-          <h2>{getMostUsedLineup()}</h2>
+        <div className="md:row-span-2 h-96 md:h-auto flex flex-col">
+          <div>
+            <h1 className="font-bold text-xl uppercase mb-2">
+              Formação mais utilizada
+            </h1>
+          </div>
+          <div className="grow grid grid-rows-5 bg-grass rounded-md field">
+            <div className="flex justify-center items-center ">
+              <div className="h-8 w-8 bg-yellow-400 rounded-full"></div>
+            </div>
+            <div className="flex justify-center items-center gap-16">
+              {Array.from({ length: lineupSplited[0] }, (el, index) => (
+                <div
+                  className="h-8 w-8 bg-gray-300 rounded-full"
+                  key={index}
+                ></div>
+              ))}
+            </div>
+            <div className="flex justify-center items-center gap-16">
+              {Array.from({ length: lineupSplited[1] }, (el, index) => (
+                <div
+                  className="h-8 w-8 bg-gray-300 rounded-full"
+                  key={index}
+                ></div>
+              ))}
+            </div>
+            <div className="flex justify-center items-center gap-16">
+              {Array.from({ length: lineupSplited[2] }, (el, index) => (
+                <div
+                  className="h-8 w-8 bg-gray-300 rounded-full"
+                  key={index}
+                ></div>
+              ))}
+            </div>
+            <div className="flex justify-center items-center">
+              {Array.from({ length: lineupSplited[3] || 0 }, (el, index) => (
+                <div
+                  className="h-8 w-8 bg-gray-300 rounded-full"
+                  key={index}
+                ></div>
+              ))}
+            </div>
+          </div>
         </div>
         <div>
           <div
@@ -125,7 +169,7 @@ export default function StepTeamInfo({ teamInfo }) {
             </button>
           </div>
         </div>
-        <div className="md:col-span-2 bg-white rounded-md font-semibold p-4 text-black">
+        <div className="md:col-span-2 bg-white rounded-md font-semibold p-4 text-black mb-4">
           <h1 className="font-bold text-xl uppercase">
             Gols marcados por tempo de Jogo
           </h1>
