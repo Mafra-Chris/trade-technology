@@ -10,12 +10,15 @@ export default function StepTeamInfo({ teamInfo }) {
   }, []);
 
   function setMostUsedLineup() {
-    if (teamInfo.stats.lineups) {
+    if (teamInfo.stats.lineups > 0) {
       let maxPlayed = Math.max(...teamInfo.stats.lineups.map((e) => e.played));
       let lineup = teamInfo.stats.lineups.find(
         (lineup) => lineup.played === maxPlayed
       );
-      setLineupSplited(lineup.formation.split('-'));
+
+      if (lineup.formation) {
+        setLineupSplited(lineup.formation.split('-'));
+      }
     }
   }
   function getPlayers() {
