@@ -8,3 +8,5 @@ pnpm install
 ```
 pnpm run dev
 ```
+
+Usar API Key da [Rapid API](https://rapidapi.com/api-sports/api/api-football/pricing)
