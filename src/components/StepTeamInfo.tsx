@@ -10,7 +10,7 @@ export default function StepTeamInfo({ teamInfo }) {
   }, []);
 
   function setMostUsedLineup() {
-    if (teamInfo.stats.lineups > 0) {
+    if (teamInfo.stats.lineups.length > 0) {
       let maxPlayed = Math.max(...teamInfo.stats.lineups.map((e) => e.played));
       let lineup = teamInfo.stats.lineups.find(
         (lineup) => lineup.played === maxPlayed
