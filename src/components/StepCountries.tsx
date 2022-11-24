@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react';
 import * as api from '../services/footballAPI';
 import Select from 'react-select';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default function StepCountries({ handleCountriesStep, apiKey }) {
+interface Props {
+  handleCountriesStep: Function;
+  apiKey: string;
+}
+
+export default function StepCountries(props: Props) {
   const [countryptions, setCountryptions] = useState([
     {
       label: '',
@@ -29,22 +36,36 @@ export default function StepCountries({ handleCountriesStep, apiKey }) {
 
   async function getLeagues() {
     const leagues = await api.getLeagues(
-      apiKey,
+      props.apiKey,
       selectedCountry || '',
       selectedSeason || 0
     );
+    console.log(leagues);
+    if (leagues.length <= 0) {
+      toast.error('Nenhuma liga encontrada!');
+      return;
+    } else if (!leagues) {
+      toast.error('Erro ao buscar ligas!');
+      return;
+    }
     let data = {
       leagues: leagues,
       season: selectedSeason,
       country: selectedCountry,
       step: 'leagues',
     };
-    handleCountriesStep(data);
+
+    props.handleCountriesStep(data);
   }
 
   useEffect(() => {
     const getCountryptions = async () => {
-      setCountryptions(await api.getCountries(apiKey));
+      let response = await api.getCountries(props.apiKey);
+      if (response) {
+        setCountryptions(response);
+      } else {
+        toast.error('Erro ao buscar países!');
+      }
     };
     getCountryptions();
     setSeasons(generateArrayOfYears());
@@ -52,6 +73,7 @@ export default function StepCountries({ handleCountriesStep, apiKey }) {
 
   return (
     <div className="w-full mt-48 max-w-2xl">
+      <ToastContainer />
       <h1 className="text-5xl font-bold text-b-blue text-center">
         Escolha um país e uma temporada
       </h1>

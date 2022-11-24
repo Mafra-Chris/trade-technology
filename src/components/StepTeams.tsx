@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import * as api from '../services/footballAPI';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function StepTeams({
   teams,
   leagueId,
@@ -13,7 +14,10 @@ export default function StepTeams({
   async function getTeamInfo(teamId: number) {
     const stats = await api.getTeamStats(apiKey, leagueId, season, teamId);
     const players = await api.getTeamPlayers(apiKey, leagueId, season, teamId);
-    console.log({ stats: stats, players: players });
+    if (!stats || !players) {
+      toast.error('Erro ao buscar estatísticas do time!');
+      return;
+    }
     let data = {
       teamInfo: { stats: stats, players: players },
       step: 'teamInfo',
@@ -43,6 +47,7 @@ export default function StepTeams({
 
   return (
     <div>
+      <ToastContainer />
       <h1 className="text-5xl font-bold text-b-blue text-center">
         Escolha um time
       </h1>

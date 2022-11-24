@@ -13,6 +13,8 @@ export async function testAPI(apiKey: string) {
     })
     if (response.status === 200) {
       return true
+    } else {
+      return false
     }
   } catch (error) {
     return false
@@ -35,7 +37,7 @@ export async function getCountries(apiKey: string) {
       }
     })
   } catch (error) {
-    console.log(error)
+    return false
   }
 
 }
@@ -51,7 +53,7 @@ export async function getLeagues(apiKey: string, country: string, season: number
     console.log(response)
     return response.data.response.map((el: any) => { return el.league })
   } catch (error) {
-    console.log(error)
+    return false
   }
 
 }
@@ -64,10 +66,10 @@ export async function getTeams(apiKey: string, leagueId: number, season: number,
       },
       params: { league: leagueId, season: season, country: country }
     })
-    console.log(response)
+
     return response.data.response.map((el: any) => { return el.team })
   } catch (error) {
-    console.log(error)
+    return false
   }
 
 }
@@ -86,7 +88,7 @@ export async function getTeamStats(apiKey: string, leagueId: number, season: num
     })
     return response.data.response
   } catch (error) {
-    console.log(error)
+    return false
   }
 
 }
@@ -105,7 +107,7 @@ export async function getTeamPlayers(apiKey: string, leagueId: number, season: n
     })
     return response.data.response
   } catch (error) {
-    console.log(error)
+    return false
   }
 
 }

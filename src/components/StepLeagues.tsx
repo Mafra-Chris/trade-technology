@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import * as api from '../services/footballAPI';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function StepLeagues({
   leagues,
   season,
@@ -11,6 +13,13 @@ export default function StepLeagues({
 
   async function getTeams(leagueId: number) {
     const teams = await api.getTeams(apiKey, leagueId, season, country);
+    if (teams.length <= 0) {
+      toast.error('Nenhum time encontrado!');
+      return;
+    } else if (!teams) {
+      toast.error('Erro ao buscar times!');
+      return;
+    }
     let data = { teams: teams, step: 'teams', league: leagueId };
     handleLeaguesStep(data);
     console.log(teams);
@@ -40,6 +49,7 @@ export default function StepLeagues({
 
   return (
     <div>
+      <ToastContainer />
       <h1 className="text-5xl font-bold text-b-blue text-center">
         Escolha uma liga
       </h1>
