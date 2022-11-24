@@ -9,30 +9,39 @@ import StepAccess from '../components/StepAccess';
 export default function Index() {
   const [currentStep, setCurrentStep] = useState('access');
   const [apiKey, setApiKey] = useState('');
-  const [currentLeague, setCurrentLeague] = useState();
-  const [leagues, setLeagues] = useState();
+  const [currentLeague, setCurrentLeague] = useState('');
+  const [leagues, setLeagues] = useState([{}]);
   const [season, setSeason] = useState(2022);
-  const [country, setCountry] = useState();
-  const [teams, setTeams] = useState();
+  const [country, setCountry] = useState('');
+  const [teams, setTeams] = useState([{}]);
 
   const [teamInfo, setTeamInfo] = useState({});
 
-  const handleAccessStep = (data) => {
+  const handleAccessStep = (data: { apiKey: string; step: string }) => {
     setApiKey(data.apiKey);
     setCurrentStep(data.step);
   };
-  const handleCountriesStep = (data) => {
+  const handleCountriesStep = (data: {
+    leagues: Array<Object>;
+    season: number;
+    country: string;
+    step: string;
+  }) => {
     setLeagues(data.leagues);
     setSeason(data.season);
     setCountry(data.country);
     setCurrentStep(data.step);
   };
-  const handleLeaguesStep = (data) => {
+  const handleLeaguesStep = (data: {
+    teams: Array<Object>;
+    league: string;
+    step: string;
+  }) => {
     setTeams(data.teams);
     setCurrentLeague(data.league);
     setCurrentStep(data.step);
   };
-  const handleTeamsStep = (data) => {
+  const handleTeamsStep = (data: { teamInfo: Object; step: string }) => {
     setTeamInfo(data.teamInfo);
     setCurrentStep(data.step);
   };
